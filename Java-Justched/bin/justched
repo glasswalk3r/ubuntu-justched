@@ -1,0 +1,122 @@
+#!/usr/bin/env perl
+package main;
+
+use warnings;
+use strict;
+use Getopt::Std;
+use Devel::CheckOS 1.76 qw(:fatal);
+use WWW::Mechanize 1.73;
+use WWW::Mechanize::TreeBuilder 1.10003;
+use Java::Justched;
+use feature 'say';
+
+die_if_os_isnt('Linux');
+my %opts;
+getopts( 'dfh', \%opts );
+
+help($VERSION) if ( exists( $opts{h} ) and defined( $opts{h} ) );
+
+my $cfg = Config::IniFiles->new(
+    -file => File::Spec->catfile( 'templates', 'config.ini' ) );
+my $url = $cfg->val( 'basic', 'download' );
+my $mech = WWW::Mechanize->new();
+WWW::Mechanize::TreeBuilder->meta->apply($mech);
+
+my $remote_jvm = get_remote_jvm( $mech, $url );
+die "Couldn't get remote information,  aborted" unless ( defined($remote_jvm) );
+
+my ( $local_jvm, $jvm_platform );
+if ( defined( $local_jvm = get_local_jvm() ) ) {
+    if ( $local_jvm->{jvm_vendor} ne 'Oracle Corporation' ) {
+        warn "Current system wide JVM is not from Oracle ("
+          . $local_jvm->{jvm_vendor}
+          . "), please make sure you want to replace it";
+    }
+    if ( $local_jvm->{version} < $remote_jvm->{version} ) {
+        warn
+'Latest release version is higher than local, check if upgrade is desired ( local is '
+          . $local_jvm->{version}
+          . ' and latest release is '
+          . $remote_jvm->{version} . ')';
+    }
+    else {
+        say 'local and last release JVM have the same verson' if ( $opts{d} );
+    }
+
+    if ( $local_jvm->{update} < $remote_jvm->{update} ) {
+
+        say 'An JVM update is available' if ( $opts{d} );
+    }
+    else {
+
+        unless ( $opts{f} ) {
+            say
+'local JVM update is the same or higher than last release, nothing to do';
+            exit 0;
+        }
+    }
+
+    $jvm_platform = check_arch($local_jvm);
+
+}
+else {
+
+    $jvm_platform = check_arch(undef);
+
+}
+
+my $link = $mech->find_link( class => 'jvdla0' );
+
+if (    ( defined($link) )
+    and ( ref($link) ne '' )
+    and ( $link->isa('WWW::Mechanize::Link') ) )
+{
+
+    $mech->get( $link->url_abs() );
+    my $download_text;
+    if ( $jvm_platform == 64 ) {
+        $download_text = 'Linux x64';
+    }
+    else {
+        $download_text = 'Linux';
+    }
+    my $download = $mech->find_link( text => $download_text );
+    die "Could not find download link, check website"
+      unless ( defined($download) );
+    say $download->url_abs if $opts{d};
+    my $response = $mech->head( $download->url_abs );
+    say $response->filename if $opts{d};
+
+    # add this information to the be used for script generation latter
+    $remote_jvm->{filename} = $response->filename;
+
+    #    $mech->get( $download, ':content_file' => $response->filename );
+
+}
+
+say "download completed, generating DEB package" if ( $opts{d} );
+gen_scripts( $remote_jvm, $cfg, $VERSION );
+
+# subs
+
+sub help {
+
+    my $version = shift;
+
+    print <<EOF;
+justched.pl - version $version
+A Perl script to update Java Runtime Environment for Ubuntu
+
+This program will download the tarball of JRE and generate a DEB package for it automatically.
+The objective is to have this program scheduled (or executed at each logon) so the end user can receive a notification
+of a new JRE avaiable for update.
+
+Required parameters:
+-s <directory>: the directory where the DPKG files for creating the related DEB package are located
+-d: enables debugging messages
+-f: forces the download and DEB package generation
+
+EOF
+    exit 0;
+
+}
