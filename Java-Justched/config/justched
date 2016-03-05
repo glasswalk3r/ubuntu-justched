@@ -1,0 +1,5 @@
+[basic]
+maintainer = John Doe
+maint_email = john.doe@foobar.org
+url = http://www.java.com/download/manual.jsp
+download = /tmp
