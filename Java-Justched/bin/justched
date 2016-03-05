@@ -7,6 +7,7 @@ use Getopt::Std;
 use Devel::CheckOS 1.76 qw(:fatal);
 use WWW::Mechanize 1.73;
 use WWW::Mechanize::TreeBuilder 1.10003;
+use Config::IniFiles 2.82;
 use Java::Justched qw(:all);
 use feature 'say';
 
@@ -32,6 +33,8 @@ send_notification( 'justched error!',
   unless ( -d $down_dir );
 chdir($down_dir)
   or send_notification( 'justched error', "cannot change to $down_dir: $!" );
+
+say 'Using directory ' . $cfg->val( 'basic', 'download' ) . ' as working place';
 
 my $mech = WWW::Mechanize->new();
 WWW::Mechanize::TreeBuilder->meta->apply($mech);
@@ -98,7 +101,7 @@ if (    ( defined($link) )
       unless ( defined($download) );
     say( 'Download link is ' . $download->url_abs ) if $opts{v};
     my $response = $mech->head( $download->url_abs );
-    say( "tarball to be downloaded is " . $response->filename ) if $opts{v};
+    say( "Tarball to be downloaded is " . $response->filename ) if $opts{v};
 
     # add this information to the be used for script generation latter
     $remote_jvm->{filename} = $response->filename;
@@ -106,7 +109,7 @@ if (    ( defined($link) )
 
 }
 
-say "download completed, generating DEB package" if ( $opts{v} );
+say "Download completed, generating DEB package" if ( $opts{v} );
 my $result = gen_pkg( $remote_jvm->{filename}, $cfg );
 if ($result) {
     exit 0;
@@ -123,11 +126,14 @@ sub help {
 
     print <<EOF;
 justched - version $version
-A Perl script to update Java Runtime Environment for Ubuntu
 
-This program will download the tarball of JRE and generate a DEB package for it automatically.
-The objective is to have this program scheduled (or executed at each logon) so the end user can receive a notification
-of a new JRE available for update.
+A Perl script to update Java Runtime Environment for Ubuntu release under GNU GPL 3.
+
+This program will download the tarball of JRE and generate a DEB package for it automatically. It is intended to provide an easier
+way to update Oracle Java Runtime Environment on Ubuntu desktops.
+
+The program should be scheduled (or executed at each logon) so the end user can receive a notification of a new JRE available for update, 
+just like on Windows. The update is NOT executed, only the package is generated.
 
 Parameters available:
 -v: verbose mode, usefull for debugging (optional)
@@ -135,6 +141,19 @@ Parameters available:
 -c <CONFIG FILE>: optional complete pathname to an alternated configuration file (default is /etc/default/justched)
 -h: this help message (optional)
 -j <CLASS PATH>: complete pathname to be used as '-classpath' parameter of the JVM (optional)
+
+This program will change it's current working directory to the directory specified in the configuration file ("download" property).
+
+So, if you need to specify different paths locations, be sure to use complete paths as shown below:
+
+    justched -v -f -c "$PWD/config/justched" -j "$PWD/bin"
+
+For information about the configuration file, check the documentation Java::Justched::Config with perldoc:
+
+    perldoc Java::Justched::Config
+
+Before downloading and generating the program, if there is an already JRE available the program will check the local version before downloading
+the tarball, as expected. You can change that with -f option.
 
 EOF
     exit 0;
