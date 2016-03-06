@@ -1,0 +1,35 @@
+Source: java-justched
+Section: java
+Priority: optional
+Maintainer: Alceu Rodrigues de Freitas Junior <arfreitas@cpan.org>
+Build-Depends: debhelper (>= 9.20120312)
+Build-Depends-Indep: libconfig-inifiles-perl (>= 2.82),
+ libdesktop-notify-perl (>= 0.03),
+ libexpect-perl (>= 1.21),
+ liblinux-info-perl (>= 0.6),
+ libwww-mechanize-perl (>= 1.73),
+ libwww-mechanize-treebuilder-perl (>= 1.10003),
+ perl
+Standards-Version: 3.9.5
+Homepage: https://github.com/glasswalk3r/ubuntu-justched
+
+Package: java-justched
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends},
+ libconfig-inifiles-perl (>= 2.82),
+ libdesktop-notify-perl (>= 0.03),
+ libexpect-perl (>= 1.21),
+ liblinux-info-perl (>= 0.6),
+ libwww-mechanize-perl (>= 1.73),
+ libwww-mechanize-treebuilder-perl (>= 1.10003)
+Description: 
+ A Perl script to update Java Runtime Environment for Ubuntu LTS.
+ .
+ This program will download the tarball of JRE and generate a DEB 
+ package for it automatically. It is intended to provide an easier
+ way to update Oracle Java Runtime Environment on Ubuntu desktops.
+ .
+ The program should be scheduled (or executed at each logon) so the
+ end user can receive a notification of a new JRE available for update, 
+ just like on Microsoft Windows jusched.exe program... well, almost.
+ The update is NOT executed, only the package is generated.

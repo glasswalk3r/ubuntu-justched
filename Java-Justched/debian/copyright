@@ -1,0 +1,21 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Source: https://metacpan.org/release/Java-Justched
+Upstream-Contact: Alceu Rodrigues de Freitas Junior <arfreitas@cpan.org>
+Upstream-Name: Java-Justched
+
+Files: *
+Copyright: Alceu Rodrigues de Freitas Junior <arfreitas@cpan.org>
+License: 
+
+Files: debian/*
+Copyright: 2016, Alceu Rodrigues de Freitas Junior <arfreitas@cpan.org>
+License: GPL-3
+
+License: GPL-3
+ This software is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ On Debian systems, the complete text of version 3 of the GNU General
+ Public License can be found in `/usr/share/common-licenses/GPL-3'.

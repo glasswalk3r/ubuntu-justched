@@ -1,0 +1,2 @@
+version=3
+https://github.com/glasswalk3r/ubuntu-justched   .*/Java-Justched-v?(\d[\d.-]*)\.(?:tar(?:\.gz|\.bz2)?|tgz|zip)$
