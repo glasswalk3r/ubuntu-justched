@@ -7,7 +7,7 @@ way to update Oracle Java Runtime Environment on Ubuntu desktops.
 The program should be scheduled (or executed at each logon) so the end user can receive a notification of a new JRE available for update, 
 just like on Microsoft Windows jusched.exe program... well, almost. The update is NOT executed, only the package is generated.
 
-# Rationale
+## Rationale
 
 Java Runtime Update on non-RPM Linux based distributions is not fun.
 
@@ -25,8 +25,8 @@ their authentication process... my local JVM was outdated. I checked with apt-ge
 
 Besides, I don't need the JDK in everywhere, in most cases the JVM is good enough.
 
-I started copying their (WebUpd8) packages definitions and hacking it to get only the JVM related packages creation. I started developing also a
-crawler in Perl to download the JVM, getting information about and generating the respective Debian package files automatically by using 
+I started copying their (WebUpd8) packages definitions and hacking it to get only the JVM related packages creation, then developing a web
+crawler in Perl to download the JVM, getting information it about and generating the respective Debian package files automatically by using 
 Template Toolkit.
 
 Then I discovered (by accident) that Debian already has this great program called [Java-Package](https://wiki.debian.org/JavaPackage), which basically
@@ -40,12 +40,27 @@ you might want to add it to your user's crontab or to execute at each logon.
 justched was created for Ubuntu LTS (currently Trusty) but could work on other different Debian-based Linux distributions, but I'm unable to validate
 (or maintain) that.
 
-## Why a DEB instead of <your-own-solution>
+### Why a DEB instead of `<your-preferred-solution>`?
 
 Using a package to install and maintain software is the main reason to have a package management after all. It is easier and organized way to do that.
-There is people out there that think it's fun to do everything from a tarball, but I don't think like that.
+There is people out there that think it's fun to do everything from a tarball, but I don't agree with them.
 
-# Known problems
+## How to configurate it?
 
-The package libdesktop-notify-perl on Ubuntu Trusty is outdated. Desktop::Notify 0.05 has changes in it's API and I found out that I couldn't get a
-icon being show in notifications. Hopefully this will be changed in the future.
+Read the online help of justched program with
+
+```
+justched -h
+```
+
+## Known problems
+
+The package libdesktop-notify-perl on Ubuntu Trusty is outdated. [Desktop::Notify](http://search.cpan.org/search?query=Desktop%3A%3ANotify&mode=all) 0.05 has 
+changes in it's API and I found out that I couldn't get a icon being show in notifications. Hopefully this will be changed in the future.
+
+The Java-Package program expects input from the end-user to accept default values. justched use Expect to handle that, so if the prompt changes, justched
+will fail to do the right thing.
+
+As any other web crawler, justched might also fail if the Java website changes their HTML. This includes a different way to request your acceptance of 
+Java license (maybe they will also ask us to dance the [Macarena](https://www.youtube.com/watch?v=XiBYM6g8Tck) to do it).
+
