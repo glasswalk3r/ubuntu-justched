@@ -21,7 +21,8 @@ Depends: ${misc:Depends}, ${perl:Depends},
  libexpect-perl (>= 1.21),
  liblinux-info-perl (>= 0.6),
  libwww-mechanize-perl (>= 1.73),
- libwww-mechanize-treebuilder-perl (>= 1.10003)
+ libwww-mechanize-treebuilder-perl (>= 1.10003), 
+ java-package (>= 0.53)
 Description: 
  A Perl script to update Java Runtime Environment for Ubuntu LTS.
  .

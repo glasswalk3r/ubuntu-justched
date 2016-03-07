@@ -10,6 +10,7 @@ use Config;
 use Exporter 'import';
 use Carp;
 use File::Spec;
+use constant MISC_DIR => File::Spec->catdir(qw(/ usr share justched));
 
 =pod
 
@@ -83,6 +84,7 @@ sub gen_pkg {
 
     #dpkg -i oracle-java8-jre_8u73_amd64.deb
     my $deb_pkg = ( split( /\s/, $match_info[2] ) )[2];
+
     # one hour waiting for script termination should be more than enough
     $exp->expect( 3600, 'Removing temporary directory: done' );
     $exp->soft_close();
@@ -118,9 +120,10 @@ sub send_notification {
 
     my ( $summary, $body ) = @_;
 
+# :WARNING:07-03-2016 11:28:09:: as version 0.05 of Desktop::Notify, the icon specification
+# is made on Desktop::Notify instance. This is different from 0.03 (version available on Trusty)
     my $notify = Desktop::Notify->new(
-        app_icon =>
-          File::Spec->catfile( 'usr', 'share', 'pixmaps', 'sun_java.png' ),
+        app_icon => File::Spec->catfile( MISC_DIR, 'icons', 'sun_java.png' ),
         app_name => 'justched'
     );
     my $notification = $notify->create(
@@ -195,7 +198,7 @@ look like this:
 In respective order, the JVM version and update, the platform the JVM was compiled for and finally the JVM provider.
 
 This Java class is expected to be in the same location as the C<justched> script. The source code of it (not impressive by any means)
-is also available, if you're especially paranoic.
+is also available in C</usr/share/justched> if you to check.
 
 If you're just a bit paranoic, the class SHA256sum output follows below:
 
@@ -207,22 +210,27 @@ If you're not happy B<yet>, delete the JvmDetails.class file and compile it agai
 
 sub get_local_jvm {
 
-    my $class_path = shift || $Config{sitebin};
+    my $class_path = shift || MISC_DIR;
     my $jvm = `which java`;
     chomp($jvm);
-    if ( defined($jvm) ) {
-        my $cmd             = "$jvm -classpath $class_path JvmDetails";
-        my $details         = `$cmd`;
-        my @parts           = split( /\n/, $details );
-        my @version_numbers = split( /\./, $parts[0] );
-        my %details         = (
-            version    => $version_numbers[1],
-            update     => ( split( '_', $version_numbers[2] ) )[1],
-            platform   => $parts[1],
-            jvm_vendor => $parts[2]
-        );
-        return \%details;
-
+    if ( ( defined($jvm) ) and ( $jvm ne '' ) ) {
+        my $cmd     = "$jvm -classpath $class_path JvmDetails";
+        my $details = `$cmd`;
+        if ( ( defined($details) ) and ( $details ne '' ) ) {
+            my @parts           = split( /\n/, $details );
+            my @version_numbers = split( /\./, $parts[0] );
+            my %details         = (
+                version    => $version_numbers[1],
+                update     => ( split( '_', $version_numbers[2] ) )[1],
+                platform   => $parts[1],
+                jvm_vendor => $parts[2]
+            );
+            return \%details;
+        }
+        else {
+            warn "Failed to execute JvmDetails Java class\n";
+            return undef;
+        }
     }
     else {
 

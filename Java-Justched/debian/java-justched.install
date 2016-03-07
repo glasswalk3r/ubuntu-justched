@@ -1,2 +1,3 @@
-images/*				usr/share/pixmaps/
-config/*                etc/default/justched
+images/*				usr/share/justched/icons/
+java/*  				usr/share/justched/
+config/*                etc/default/
