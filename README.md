@@ -23,7 +23,7 @@ That worked well for me for years. Recently, unfortunately I had an issue with a
 their authentication process... my local JVM was outdated. I checked with apt-get and everything was fine. WebUpd8 repository was outdated
 (I'm not complaining, it is just a fact). I really don't thing those good guys are responsible for getting my computer updated.
 
-Besides, I don't need the JDK in everywhere, in most cases the JVM is good enough.
+Besides, I don't need the JDK everywhere, in most cases the JVM is good enough.
 
 I started copying their (WebUpd8) packages definitions and hacking it to get only the JVM related packages creation, then developing a web
 crawler in Perl to download the JVM, getting information it about and generating the respective Debian package files automatically by using 
@@ -32,12 +32,12 @@ Template Toolkit.
 Then I discovered (by accident) that Debian already has this great program called [Java-Package](https://wiki.debian.org/JavaPackage), which basically
 does all the hard lifting for me to "debianize" the JVM tarball.
 
-The result of this work is the Perl program justched (yes, it started with a bad type from the jusched.exe program available on Windows) but I think
+The result of this work is the Perl program justched (yes, it started with a typo from the jusched.exe program available on Windows) but I think
 it's a fun name (the pun was unintented). Hopefully, you can get the JVM DEB package created with minimal effort for your own computer (or even an
 entire network of Ubuntu desktops). Running it on a desktop will even send you a notification telling you that a new version of Java is available, so
 you might want to add it to your user's crontab or to execute at each logon.
 
-justched was created for Ubuntu LTS (currently Trusty) but could work on other different Debian-based Linux distributions, but I'm unable to validate
+justched was created for Ubuntu LTS (currently Trusty). It could work on other different Debian-based Linux distributions, but I'm unable to validate
 (or maintain) that.
 
 ### Why a DEB instead of `<your-preferred-solution>`?
@@ -47,11 +47,32 @@ There is people out there that think it's fun to do everything from a tarball, b
 
 ## How to configurate it?
 
-Read the online help of justched program with
+First you need to add the project PPA. justched is not available on CPAN. Open a terminal and enter:
+
+```
+sudo add-apt-repository ppa:glasswalk3r-yahoo/ubuntu-justched
+sudo apt-get update
+sudo apt-get install ubuntu-justched
+```
+
+This is the minimum information. You can check more details on [Launchpad](https://help.launchpad.net/Packaging/PPA/InstallingSoftware) documentation about it.
+
+Read the online help of justched program with a
 
 ```
 justched -h
 ```
+
+And edit the configuration file.
+
+Now you may want to add the program to your session startup. In most cases invoking `gnome-session-properties` from Unity will do it. You can see a lot more of 
+options to enable it in http://askubuntu.com/questions/30931/how-do-i-make-a-program-auto-start-every-time-i-log-in.
+
+justched will now look for newer version of JVM in your Ubuntu. If something newer is found, it will be downloaded and converted automatically to a DEB file. The
+location of the DEB file will be defined by justched configuration file and you will have to install it manually. A desktop notification will be sent to you when this
+is done.
+
+In future versions I may add a GUI to help users to do that easily.
 
 ## Known problems
 
