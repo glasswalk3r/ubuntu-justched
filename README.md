@@ -82,6 +82,6 @@ changes in it's API and I found out that I couldn't get a icon being show in not
 The Java-Package program expects input from the end-user to accept default values. justched use Expect to handle that, so if the prompt changes, justched
 will fail to do the right thing.
 
-As any other web crawler, justched might also fail if the Java website changes their HTML. This includes a different way to request your acceptance of 
+As any other web crawler, justched might also fail if the Java website changes their HTML. This may include a different way to request your acceptance of 
 Java license (maybe they will also ask us to dance the [Macarena](https://www.youtube.com/watch?v=XiBYM6g8Tck) to do it).
 
