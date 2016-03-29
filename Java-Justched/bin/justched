@@ -21,7 +21,7 @@ if ( ( exists( $opts{c} ) ) and ( -f $opts{c} ) ) {
 }
 else {
     $cfg = Config::IniFiles->new(
-        -file => File::Spec->catfile( 'etc', 'default', 'justched' ) );
+        -file => File::Spec->catfile( '', 'etc', 'default', 'justched' ) );
 }
 
 my $down_dir = $cfg->val( 'basic', 'download' );
