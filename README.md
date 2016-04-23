@@ -52,7 +52,7 @@ First you need to add the project PPA. justched is not available on CPAN. Open a
 ```
 sudo add-apt-repository ppa:glasswalk3r-yahoo/ubuntu-justched
 sudo apt-get update
-sudo apt-get install ubuntu-justched
+sudo apt-get install java-justched
 ```
 
 This is the minimum information. You can check more details on [Launchpad](https://help.launchpad.net/Packaging/PPA/InstallingSoftware) documentation about it.
