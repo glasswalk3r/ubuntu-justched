@@ -55,6 +55,15 @@ sudo apt-get update
 sudo apt-get install java-justched
 ```
 
+There is also a dependency of another package liblinux-info-perl. PPA configuration explicit declares that, so it should solve automatically. If not, you
+might need to add it's related PPA as well:
+
+```
+sudo add-apt-repository ppa:glasswalk3r-yahoo/linux-info
+sudo apt-get update
+sudo apt-get install java-justched
+```
+
 This is the minimum information. You can check more details on [Launchpad](https://help.launchpad.net/Packaging/PPA/InstallingSoftware) documentation about it.
 
 Read the online help of justched program with a
