@@ -21,7 +21,7 @@ the respective DEB packages to install it. They even have their own PPA reposito
 
 That worked well for me for years. Recently, unfortunately I had an issue with a Brazilian home banking website that uses Java applets for
 their authentication process... my local JVM was outdated. I checked with apt-get and everything was fine. WebUpd8 repository was outdated
-(I'm not complaining, it is just a fact). I really don't thing those good guys are responsible for getting my computer updated.
+(I'm not complaining, it is just a fact). I really don't think those good guys are responsible for getting my computer updated.
 
 Besides, I don't need the JDK everywhere, in most cases the JVM is good enough.
 
@@ -37,8 +37,7 @@ it's a fun name (the pun was unintented). Hopefully, you can get the JVM DEB pac
 entire network of Ubuntu desktops). Running it on a desktop will even send you a notification telling you that a new version of Java is available, so
 you might want to add it to your user's crontab or to execute at each logon.
 
-justched was created for Ubuntu LTS (currently Trusty). It could work on other different Debian-based Linux distributions, but I'm unable to validate
-(or maintain) that.
+justched was created for Ubuntu LTS (currently Trusty). It could work on other different Debian-based Linux distributions, but I'm unable to validate (or maintain) that.
 
 ### Why a DEB instead of `<your-preferred-solution>`?
 
