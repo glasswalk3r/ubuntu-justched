@@ -95,4 +95,10 @@ Java license (maybe they will also ask us to dance the [Macarena](https://www.yo
 
 ## Building it locally
 
-If you want to build this Perl distribution locally, be sure to install first the packages pkg-config and libdbus-1-dev before even starting... if you don't to this, necessary dependencies will not be resolved.
+If you want to build this Perl distribution locally, be sure to install first the following packages:
+
+* pkg-config
+* libdbus-1-dev
+* java-package
+
+before even starting... if you don't to this, necessary dependencies will not be resolved.
