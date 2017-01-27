@@ -93,3 +93,6 @@ will fail to do the right thing.
 As any other web crawler, justched might also fail if the Java website changes their HTML. This may include a different way to request your acceptance of 
 Java license (maybe they will also ask us to dance the [Macarena](https://www.youtube.com/watch?v=XiBYM6g8Tck) to do it).
 
+## Building it locally
+
+If you want to build this Perl distribution locally, be sure to install first the packages pkg-config and libdbus-1-dev before even starting... if you don't to this, necessary dependencies will not be resolved.
