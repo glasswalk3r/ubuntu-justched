@@ -32,7 +32,7 @@ Template Toolkit.
 Then I discovered (by accident) that Debian already has this great program called [Java-Package](https://wiki.debian.org/JavaPackage), which basically
 does all the hard lifting for me to "debianize" the JVM tarball.
 
-The result of this work is the Perl program justched (yes, it started with a typo from the jusched.exe program available on Windows) but I think
+The result of this work is the Perl program justched (yes, it started with a typo from the `jusched.exe` program available on Windows) but I think
 it's a fun name (the pun was unintented). Hopefully, you can get the JVM DEB package created with minimal effort for your own computer (or even an
 entire network of Ubuntu desktops). Running it on a desktop will even send you a notification telling you that a new version of Java is available, so
 you might want to add it to your user's crontab or to execute at each logon.
@@ -75,7 +75,7 @@ justched -h
 And edit the configuration file.
 
 Now you may want to add the program to your session startup. In most cases invoking `gnome-session-properties` from Unity will do it. You can see a lot more of 
-options to enable it in http://askubuntu.com/questions/30931/how-do-i-make-a-program-auto-start-every-time-i-log-in.
+options to enable it at http://askubuntu.com/questions/30931/how-do-i-make-a-program-auto-start-every-time-i-log-in.
 
 justched will now look for newer version of JVM in your Ubuntu. If something newer is found, it will be downloaded and converted automatically to a DEB file. The
 location of the DEB file will be defined by justched configuration file and you will have to install it manually. A desktop notification will be sent to you when this
@@ -88,8 +88,8 @@ In future versions I may add a GUI to help users to do that easily.
 The package libdesktop-notify-perl on Ubuntu Trusty is outdated. [Desktop::Notify](http://search.cpan.org/search?query=Desktop%3A%3ANotify&mode=all) 0.05 has 
 changes in it's API and I found out that I couldn't get a icon being show in notifications. Hopefully this will be changed in the future.
 
-The Java-Package program expects input from the end-user to accept default values. justched use Expect to handle that, so if the prompt changes, justched
-will fail to do the right thing.
+The Java-Package program expects input from the end-user to accept default values. justched uses [Expect](https://metacpan.org/pod/Expect) to handle that, so if the
+prompt changes, justched will fail to do the right thing.
 
 As any other web crawler, justched might also fail if the Java website changes their HTML. This may include a different way to request your acceptance of 
 Java license (maybe they will also ask us to dance the [Macarena](https://www.youtube.com/watch?v=XiBYM6g8Tck) to do it).
